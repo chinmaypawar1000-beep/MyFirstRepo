@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KrishiMart – Farm to Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil: #3b2a1a;
+    --bark: #5c3d1e;
+    --moss: #4a7c59;
+    --leaf: #6aaa64;
+    --sprout: #a8d5a2;
+    --sunlight: #f4c430;
+    --wheat: #f5deb3;
+    --cream: #fdf6e3;
+    --sky: #d4edda;
+    --rust: #c0392b;
+    --terracotta: #e07b54;
+    --shadow: rgba(59,42,26,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--soil);
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ─── HEADER / NAV ─── */
+  header {
+    background: var(--soil);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .nav-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 30px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--leaf);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 0 3px var(--sprout);
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--wheat);
+    letter-spacing: 0.02em;
+  }
+
+  .logo-text span { color: var(--sunlight); }
+
+  nav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  nav a {
+    color: var(--sprout);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 20px;
+    transition: all 0.25s;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  nav a:hover { background: var(--moss); color: #fff; }
+
+  .nav-cta {
+    background: var(--sunlight) !important;
+    color: var(--soil) !important;
+    font-weight: 700 !important;
+  }
+
+  .nav-cta:hover { background: #e6b800 !important; transform: scale(1.05); }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, #2d1f0f 0%, #3b2a1a 40%, #1f3a2b 100%);
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(106,170,100,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(244,196,48,0.08) 0%, transparent 70%);
+    bottom: -50px; left: 10%;
+    border-radius: 50%;
+  }
+
+  .hero-text {
+    padding: 60px 60px 60px 80px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(106,170,100,0.2);
+    border: 1px solid var(--leaf);
+    color: var(--sprout);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+    font-weight: 900;
+    color: var(--wheat);
+    line-height: 1.15;
+    margin-bottom: 22px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--sunlight);
+  }
+
+  .hero p {
+    color: rgba(245,222,179,0.75);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--leaf);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(106,170,100,0.4);
+    letter-spacing: 0.03em;
+  }
+
+  .btn-primary:hover { background: var(--moss); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(106,170,100,0.5); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--wheat);
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 2px solid rgba(245,222,179,0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover { border-color: var(--wheat); background: rgba(245,222,179,0.08); transform: translateY(-3px); }
+
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 1.1s ease 0.2s both;
+  }
+
+  .hero-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 420px;
+  }
+
+  .hero-card {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    transition: transform 0.3s, background 0.3s;
+    cursor: pointer;
+  }
+
+  .hero-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.1); }
+
+  .hero-card .emoji { font-size: 2.2rem; margin-bottom: 10px; }
+
+  .hero-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--wheat);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .hero-card p { color: rgba(245,222,179,0.6); font-size: 0.76rem; line-height: 1.5; }
+
+  .hero-card.featured {
+    grid-column: span 2;
+    background: rgba(106,170,100,0.15);
+    border-color: rgba(106,170,100,0.3);
+  }
+
+  /* ─── STATS STRIP ─── */
+  .stats-strip {
+    background: var(--moss);
+    padding: 18px 0;
+    overflow: hidden;
+  }
+
+  .stats-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+    color: #fff;
+  }
+
+  .stat strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--sunlight);
+  }
+
+  .stat span { font-size: 0.82rem; opacity: 0.85; letter-spacing: 0.05em; }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 80px 30px;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 14px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 28px;
+    height: 2px;
+    background: var(--leaf);
+    display: inline-block;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 900;
+    color: var(--soil);
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+
+  .section-sub {
+    color: #7a6052;
+    font-size: 1rem;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* ─── CATEGORIES ─── */
+  .categories-bg {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--sky) 100%);
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .cat-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 30px 20px 26px;
+    text-align: center;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 16px var(--shadow);
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--sprout), var(--sky));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .cat-card:hover { transform: translateY(-8px); border-color: var(--leaf); box-shadow: 0 16px 40px rgba(74,124,89,0.2); }
+  .cat-card:hover::before { opacity: 0.15; }
+
+  .cat-emoji { font-size: 2.8rem; margin-bottom: 14px; display: block; }
+
+  .cat-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--soil);
+    margin-bottom: 6px;
+    position: relative;
+  }
+
+  .cat-count { font-size: 0.78rem; color: var(--moss); font-weight: 600; position: relative; }
+
+  /* ─── PRODUCT LISTINGS ─── */
+  .prod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 24px;
+  }
+
+  .prod-card {
+    background: #fff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: all 0.35s;
+    border: 1px solid rgba(74,124,89,0.1);
+  }
+
+  .prod-card:hover { transform: translateY(-8px); box-shadow: 0 20px 48px rgba(74,124,89,0.18); }
+
+  .prod-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--sky) 0%, var(--sprout) 100%);
+  }
+
+  .prod-body { padding: 20px; }
+
+  .prod-badge {
+    display: inline-block;
+    background: var(--sky);
+    color: var(--moss);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .prod-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--soil);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .prod-desc { font-size: 0.82rem; color: #7a6052; margin-bottom: 14px; line-height: 1.55; }
+
+  .prod-footer { display: flex; align-items: center; justify-content: space-between; }
+
+  .prod-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--moss);
+  }
+
+  .prod-price .unit { font-size: 0.75rem; color: #9a8070; font-weight: 400; font-family: 'Nunito', sans-serif; margin-left: 3px; }
+
+  .btn-buy {
+    background: var(--leaf);
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .btn-buy:hover { background: var(--moss); transform: scale(1.05); }
+
+  /* ─── SELL SECTION ─── */
+  .sell-section {
+    background: linear-gradient(135deg, var(--soil) 0%, #1f3a2b 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 80px 0;
+  }
+
+  .sell-section::before {
+    content: '🌿';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.05;
+    top: -20px;
+    right: -40px;
+    filter: blur(2px);
+  }
+
+  .sell-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .sell-text .section-label { color: var(--sprout); }
+  .sell-text .section-title { color: var(--wheat); }
+  .sell-text .section-sub { color: rgba(245,222,179,0.7); margin-bottom: 32px; }
+
+  .sell-steps { display: flex; flex-direction: column; gap: 18px; }
+
+  .sell-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .step-num {
+    min-width: 40px;
+    height: 40px;
+    background: rgba(106,170,100,0.2);
+    border: 2px solid var(--leaf);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: var(--leaf);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+  }
+
+  .step-info h4 {
+    color: var(--wheat);
+    font-weight: 700;
+    margin-bottom: 3px;
+    font-size: 0.95rem;
+  }
+
+  .step-info p { color: rgba(245,222,179,0.6); font-size: 0.82rem; line-height: 1.5; }
+
+  /* ─── SELL FORM ─── */
+  .sell-form {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 28px;
+    padding: 36px 32px;
+  }
+
+  .sell-form h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--wheat);
+    margin-bottom: 22px;
+    font-weight: 700;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--sprout);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 11px 14px;
+    color: var(--wheat);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.25s;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(245,222,179,0.35); }
+
+  .form-group select option { background: var(--soil); }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--leaf); }
+
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, var(--leaf), var(--moss));
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    margin-top: 6px;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(74,124,89,0.4);
+  }
+
+  .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(74,124,89,0.5); }
+
+  /* ─── EQUIPMENT SECTION ─── */
+  .equip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .equip-card {
+    background: #fff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+    display: flex;
+    gap: 0;
+    flex-direction: column;
+    transition: all 0.3s;
+    border: 1px solid rgba(74,124,89,0.1);
+  }
+
+  .equip-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(74,124,89,0.16); }
+
+  .equip-img {
+    height: 160px;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    position: relative;
+  }
+
+  .equip-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--rust);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .equip-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+
+  .equip-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--soil);
+    margin-bottom: 6px;
+  }
+
+  .equip-specs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+
+  .spec-tag {
+    background: var(--sky);
+    color: var(--moss);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+
+  .equip-desc { font-size: 0.82rem; color: #7a6052; line-height: 1.55; flex: 1; margin-bottom: 16px; }
+
+  .equip-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+
+  .equip-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--terracotta);
+  }
+
+  .btn-rent {
+    background: transparent;
+    color: var(--moss);
+    border: 2px solid var(--moss);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-right: 8px;
+  }
+
+  .btn-rent:hover { background: var(--moss); color: #fff; }
+
+  /* ─── MARKETPLACE TABS ─── */
+  .tab-nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: 2px solid var(--sprout);
+    color: var(--moss);
+    padding: 9px 22px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .tab-btn.active,
+  .tab-btn:hover { background: var(--moss); border-color: var(--moss); color: #fff; }
+
+  /* ─── TIPS SECTION ─── */
+  .tips-bg { background: var(--sky); }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .tip-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 16px var(--shadow);
+    border-left: 4px solid var(--leaf);
+    transition: transform 0.3s;
+  }
+
+  .tip-card:hover { transform: translateX(6px); }
+
+  .tip-icon { font-size: 2rem; margin-bottom: 14px; }
+
+  .tip-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--soil);
+    margin-bottom: 8px;
+  }
+
+  .tip-text { font-size: 0.83rem; color: #7a6052; line-height: 1.6; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--soil);
+    padding: 60px 0 24px;
+  }
+
+  .footer-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand p {
+    color: rgba(245,222,179,0.6);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--wheat);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(245,222,179,0.15);
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul li a {
+    color: rgba(245,222,179,0.6);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li a:hover { color: var(--leaf); }
+
+  .footer-bottom {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px 30px 0;
+    border-top: 1px solid rgba(245,222,179,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-bottom p { color: rgba(245,222,179,0.4); font-size: 0.8rem; }
+
+  .footer-langs { display: flex; gap: 10px; }
+
+  .lang-btn {
+    background: rgba(255,255,255,0.07);
+    color: rgba(245,222,179,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .lang-btn:hover,
+  .lang-btn.active { background: var(--moss); color: #fff; border-color: var(--moss); }
+
+  /* ─── FLOATING WHATSAPP ─── */
+  .whatsapp-fab {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: #25D366;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+    z-index: 200;
+    cursor: pointer;
+    transition: transform 0.3s;
+    text-decoration: none;
+  }
+
+  .whatsapp-fab:hover { transform: scale(1.12) rotate(-5deg); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-text { padding: 50px 30px 30px; }
+    .hero-visual { padding: 20px 30px 50px; }
+    .sell-inner { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .nav-inner { flex-direction: column; gap: 10px; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .hero-cards-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Search bar */
+  .search-section {
+    background: var(--wheat);
+    padding: 30px 30px;
+    border-bottom: 2px solid rgba(74,124,89,0.1);
+  }
+
+  .search-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-box {
+    flex: 1;
+    min-width: 250px;
+    background: #fff;
+    border: 2px solid rgba(74,124,89,0.2);
+    border-radius: 50px;
+    padding: 12px 22px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    color: var(--soil);
+    outline: none;
+    transition: border-color 0.25s;
+  }
+
+  .search-box:focus { border-color: var(--leaf); }
+
+  .search-box::placeholder { color: #b0a090; }
+
+  .search-filter {
+    background: #fff;
+    border: 2px solid rgba(74,124,89,0.2);
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem;
+    color: var(--soil);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .btn-search {
+    background: var(--leaf);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .btn-search:hover { background: var(--moss); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">🌾</div>
+      <div class="logo-text">Krishi<span>Mart</span></div>
+    </a>
+    <nav>
+      <a href="#buy">Buy</a>
+      <a href="#equipment">Equipment</a>
+      <a href="#sell">Sell</a>
+      <a href="#tips">Farm Tips</a>
+      <a href="#sell" class="nav-cta">+ List Product</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-tag">🇮🇳 India's Farmer-First Marketplace</span>
+    <h1>Your Farm,<br><em>Your Market,</em><br>Your Future</h1>
+    <p>Buy quality seeds, fertilizers, pesticides & farm equipment — or sell your fresh produce directly to customers. KrishiMart connects farmers with everything they need, at fair prices.</p>
+    <div class="hero-btns">
+      <a href="#buy" class="btn-primary">🛒 Shop Now</a>
+      <a href="#sell" class="btn-outline">📦 Sell Products</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-cards-grid">
+      <div class="hero-card featured">
+        <div class="emoji">🌱</div>
+        <h3>Certified Organic Seeds</h3>
+        <p>Hybrid & desi varieties for every season and soil type</p>
+      </div>
+      <div class="hero-card">
+        <div class="emoji">🧪</div>
+        <h3>Fertilizers</h3>
+        <p>Urea, DAP, organic compost & more</p>
+      </div>
+      <div class="hero-card">
+        <div class="emoji">🚜</div>
+        <h3>Tractors</h3>
+        <p>Buy, rent or hire farm equipment</p>
+      </div>
+      <div class="hero-card">
+        <div class="emoji">🌽</div>
+        <h3>Sell Produce</h3>
+        <p>Direct to consumers, no middlemen</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat"><strong>1.2L+</strong><span>Farmers Registered</span></div>
+    <div class="stat"><strong>500+</strong><span>Product Categories</span></div>
+    <div class="stat"><strong>28</strong><span>States Covered</span></div>
+    <div class="stat"><strong>₹0</strong><span>Commission on First 3 Listings</span></div>
+    <div class="stat"><strong>24/7</strong><span>Kisan Helpline</span></div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-inner">
+    <input class="search-box" type="text" placeholder="🔍  Search seeds, fertilizers, tractors, pesticides...">
+    <select class="search-filter">
+      <option>All Categories</option>
+      <option>Seeds</option>
+      <option>Fertilizers</option>
+      <option>Pesticides</option>
+      <option>Tractors & Equipment</option>
+      <option>Irrigation</option>
+      <option>Fresh Produce</option>
+    </select>
+    <select class="search-filter">
+      <option>All States</option>
+      <option>Maharashtra</option>
+      <option>Punjab</option>
+      <option>Uttar Pradesh</option>
+      <option>Karnataka</option>
+      <option>Rajasthan</option>
+    </select>
+    <button class="btn-search">Search</button>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="categories-bg">
+  <div class="section">
+    <span class="section-label">Browse by Category</span>
+    <h2 class="section-title">Everything a Farmer Needs</h2>
+    <p class="section-sub">From field inputs to machinery — find government-approved, quality-checked products from trusted suppliers across India.</p>
+    <div class="cat-grid">
+      <a href="#" class="cat-card"><span class="cat-emoji">🌾</span><div class="cat-name">Seeds</div><div class="cat-count">2,400+ varieties</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">🧪</span><div class="cat-name">Fertilizers</div><div class="cat-count">800+ products</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">🪲</span><div class="cat-name">Pesticides</div><div class="cat-count">600+ solutions</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">💧</span><div class="cat-name">Irrigation</div><div class="cat-count">Drip, sprinkler & pipes</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">🚜</span><div class="cat-name">Tractors</div><div class="cat-count">Buy & Rent</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">🌿</span><div class="cat-name">Organic Inputs</div><div class="cat-count">Certified organic</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">🌽</span><div class="cat-name">Fresh Produce</div><div class="cat-count">Farm-fresh direct</div></a>
+      <a href="#" class="cat-card"><span class="cat-emoji">🏗️</span><div class="cat-name">Tools & Implements</div><div class="cat-count">Hand & power tools</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- BUY PRODUCTS -->
+<div id="buy">
+  <div class="section">
+    <span class="section-label">Top Listings</span>
+    <h2 class="section-title">Featured Products</h2>
+    <p class="section-sub">Best-selling inputs trusted by farmers across Maharashtra, Punjab, UP and more. All products are quality-verified.</p>
+
+    <div class="tab-nav">
+      <button class="tab-btn active">All</button>
+      <button class="tab-btn">Seeds</button>
+      <button class="tab-btn">Fertilizers</button>
+      <button class="tab-btn">Pesticides</button>
+      <button class="tab-btn">Organic</button>
+    </div>
+
+    <div class="prod-grid">
+      <div class="prod-card">
+        <div class="prod-img">🌾</div>
+        <div class="prod-body">
+          <span class="prod-badge">Seeds</span>
+          <div class="prod-name">HD-2967 Wheat Seeds</div>
+          <div class="prod-desc">High-yield, disease-resistant wheat variety. Ideal for Rabi season across North India.</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹1,450<span class="unit">/50kg</span></div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img">🌽</div>
+        <div class="prod-body">
+          <span class="prod-badge">Seeds</span>
+          <div class="prod-name">NK-6240 Hybrid Maize</div>
+          <div class="prod-desc">Syngenta certified hybrid. High starch content, tolerant to water stress & lodging.</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹980<span class="unit">/bag</span></div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img">🧪</div>
+        <div class="prod-body">
+          <span class="prod-badge">Fertilizer</span>
+          <div class="prod-name">DAP (Di-ammonium Phosphate)</div>
+          <div class="prod-desc">Government-subsidized. Best for base dressing. Suitable for wheat, paddy, cotton & pulses.</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹1,350<span class="unit">/50kg</span></div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img">🌿</div>
+        <div class="prod-body">
+          <span class="prod-badge">Organic</span>
+          <div class="prod-name">Vermicompost – Premium Grade</div>
+          <div class="prod-desc">100% organic vermicompost. Improves soil texture and microbial activity. NPOP certified.</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹420<span class="unit">/50kg</span></div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img">🪲</div>
+        <div class="prod-body">
+          <span class="prod-badge">Pesticide</span>
+          <div class="prod-name">Chlorpyrifos 20% EC</div>
+          <div class="prod-desc">Broad-spectrum insecticide. Controls termites, borers, aphids on cotton, paddy & vegetables.</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹340<span class="unit">/litre</span></div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img">💧</div>
+        <div class="prod-body">
+          <span class="prod-badge">Irrigation</span>
+          <div class="prod-name">Drip Irrigation Kit (1 Acre)</div>
+          <div class="prod-desc">Complete drip kit for 1 acre with 16mm lateral pipe, drippers & filter. 50% subsidy available.</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹8,200<span class="unit">/acre kit</span></div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EQUIPMENT -->
+<div id="equipment" style="background: linear-gradient(180deg, #fff, var(--cream));">
+  <div class="section">
+    <span class="section-label">Farm Equipment</span>
+    <h2 class="section-title">Tractors, Tools & Machinery</h2>
+    <p class="section-sub">Buy second-hand verified equipment or rent by the hour/day. PM-KUSUM and other subsidies available.</p>
+    <div class="equip-grid">
+      <div class="equip-card">
+        <div class="equip-img">🚜 <span class="equip-label">For Sale</span></div>
+        <div class="equip-body">
+          <div class="equip-name">Mahindra Jivo 245 DI – 24 HP</div>
+          <div class="equip-specs">
+            <span class="spec-tag">24 HP</span>
+            <span class="spec-tag">2022 Model</span>
+            <span class="spec-tag">800 Hours</span>
+            <span class="spec-tag">Nagpur</span>
+          </div>
+          <div class="equip-desc">Well-maintained compact tractor, perfect for small farms & horticulture. All original parts. Single owner. Papers clear.</div>
+          <div class="equip-footer">
+            <div class="equip-price">₹4.2 Lakh</div>
+            <div>
+              <button class="btn-rent">Enquire</button>
+              <button class="btn-buy">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-img">⚙️ <span class="equip-label">Rent Available</span></div>
+        <div class="equip-body">
+          <div class="equip-name">Rotavator (36 Blades)</div>
+          <div class="equip-specs">
+            <span class="spec-tag">6 ft Width</span>
+            <span class="spec-tag">Compatible: 35–65 HP</span>
+            <span class="spec-tag">Pune</span>
+          </div>
+          <div class="equip-desc">Heavy-duty rotavator for soil preparation. Deep tillage capability. Available for hire including operator.</div>
+          <div class="equip-footer">
+            <div class="equip-price">₹900<span style="font-size:0.75rem;font-weight:400;">/hr</span></div>
+            <div>
+              <button class="btn-rent">Rent Now</button>
+              <button class="btn-buy">Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-img">🌾 <span class="equip-label">For Sale</span></div>
+        <div class="equip-body">
+          <div class="equip-name">Paddy Thresher – 8 HP Diesel</div>
+          <div class="equip-specs">
+            <span class="spec-tag">8 HP</span>
+            <span class="spec-tag">Mobile</span>
+            <span class="spec-tag">Amravati</span>
+          </div>
+          <div class="equip-desc">Manual feed paddy/wheat thresher. Portable on wheel frame. Output: 800-1000 kg/hr. Excellent condition.</div>
+          <div class="equip-footer">
+            <div class="equip-price">₹62,000</div>
+            <div>
+              <button class="btn-rent">Enquire</button>
+              <button class="btn-buy">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SELL SECTION -->
+<div id="sell">
+  <div class="sell-section">
+    <div class="sell-inner">
+      <div class="sell-text">
+        <span class="section-label">Sell on KrishiMart</span>
+        <h2 class="section-title">Grow Your Income,<br><em>Skip the Middleman</em></h2>
+        <p class="section-sub">Whether you want to sell fresh vegetables, grains, or used equipment — list your product in under 5 minutes and reach thousands of buyers directly.</p>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <div class="step-num">1</div>
+            <div class="step-info">
+              <h4>Create Your Free Account</h4>
+              <p>Register with Aadhaar or mobile number. No documents needed to start.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <div class="step-num">2</div>
+            <div class="step-info">
+              <h4>List Your Product / Produce</h4>
+              <p>Add photos, price and description. List in Hindi, Marathi or English.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <div class="step-num">3</div>
+            <div class="step-info">
+              <h4>Receive Orders & Get Paid</h4>
+              <p>Buyers contact you directly. Payment via UPI or cash on delivery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sell-form">
+        <h3>📦 Quick Listing Form</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="e.g. Ramesh Patil">
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="tel" placeholder="+91 9876543210">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Product / Produce Name</label>
+          <input type="text" placeholder="e.g. Fresh Tomatoes, Old Tractor, Wheat Bag">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select>
+              <option>Select Category</option>
+              <option>Fresh Vegetables</option>
+              <option>Grains & Pulses</option>
+              <option>Fruits</option>
+              <option>Seeds</option>
+              <option>Fertilizers</option>
+              <option>Equipment / Machinery</option>
+              <option>Dairy Products</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="text" placeholder="e.g. ₹50 per kg">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea placeholder="Tell buyers about your product — quality, quantity, location, delivery options..."></textarea>
+        </div>
+        <button class="btn-submit">🌱 List My Product Free</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FARM TIPS -->
+<div id="tips" class="tips-bg">
+  <div class="section">
+    <span class="section-label">Knowledge Center</span>
+    <h2 class="section-title">Krishi Tips & Government Schemes</h2>
+    <p class="section-sub">Stay informed about best farming practices, weather advisories, and schemes that put money back in your pocket.</p>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">☀️</div>
+        <div class="tip-title">PM-KUSUM Solar Pump Scheme</div>
+        <div class="tip-text">Get up to 90% subsidy on solar irrigation pumps under PM-KUSUM Yojana. Apply online or through your nearest Krishi Kendra.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🌧️</div>
+        <div class="tip-title">Fasal Bima – Crop Insurance</div>
+        <div class="tip-text">Protect your crops against drought, flood and unseasonal rain. Premium as low as 2% for Kharif crops under PMFBY.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🌡️</div>
+        <div class="tip-title">Weather Advisory – Vidarbha</div>
+        <div class="tip-text">Pre-monsoon rains expected in Nagpur & Amravati by 15 June. Prepare field bunding and sow cotton after first rain.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🏦</div>
+        <div class="tip-title">Kisan Credit Card (KCC)</div>
+        <div class="tip-text">Get up to ₹3 lakh credit at 4% interest for buying seeds, fertilizers and other inputs. Apply at any nationalized bank.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🧑‍🌾</div>
+        <div class="tip-title">Soil Health Card</div>
+        <div class="tip-text">Know your soil NPK, pH and micronutrients. Free testing at Krishi Vigyan Kendras. Use results to optimize fertilizer use.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📱</div>
+        <div class="tip-title">eNAM – Online Mandi</div>
+        <div class="tip-text">Sell directly on the National Agricultural Market platform. Get best prices from buyers across India without leaving your village.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-icon">🌾</div>
+        <div class="logo-text">Krishi<span>Mart</span></div>
+      </div>
+      <p>India's trusted farmer marketplace — connecting growers with buyers, and farmers with the best prices on every input they need.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Buy</h4>
+      <ul>
+        <li><a href="#">Seeds</a></li>
+        <li><a href="#">Fertilizers</a></li>
+        <li><a href="#">Pesticides</a></li>
+        <li><a href="#">Tractors</a></li>
+        <li><a href="#">Irrigation</a></li>
+        <li><a href="#">Organic Inputs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Sell</h4>
+      <ul>
+        <li><a href="#">List Produce</a></li>
+        <li><a href="#">List Equipment</a></li>
+        <li><a href="#">Seller Dashboard</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Seller Guidelines</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">Kisan Helpline</a></li>
+        <li><a href="#">Government Schemes</a></li>
+        <li><a href="#">Soil Testing</a></li>
+        <li><a href="#">Weather</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 KrishiMart. Made with 🌱 for Indian Farmers. Jai Kisan!</p>
+    <div class="footer-langs">
+      <button class="lang-btn active">English</button>
+      <button class="lang-btn">हिंदी</button>
+      <button class="lang-btn">मराठी</button>
+      <button class="lang-btn">ਪੰਜਾਬੀ</button>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FAB -->
+<a href="https://wa.me/919876543210" class="whatsapp-fab" title="Chat on WhatsApp">📲</a>
+
+<script>
+  // Tab filtering
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // Scroll reveal animation
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp 0.7s ease forwards';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.prod-card, .cat-card, .equip-card, .tip-card').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
